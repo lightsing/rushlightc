@@ -1,0 +1,5 @@
+rl_ident = @{ (("_" | ASCII_ALPHA) ~ ("_" | ASCII_ALPHANUMERIC)+) }
+rust_ident = ${ ("r#" ~ rl_ident) }
+ident = { rl_ident | rust_ident }
+
+annotation = ${ "@" ~ rl_ident ~ ("(" ~ rl_ident ~ ")")? }
