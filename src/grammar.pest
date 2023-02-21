@@ -37,10 +37,14 @@ floating_point = @{
 	ASCII_DIGITS* ~ "." ~ ASCII_DIGITS
     ~ (("e" | "E") ~ ("+" | "-")? ~ ASCII_DIGITS)?
 }
-number_literal = {
-	floating_point
-    | hex_integer
-    | octal_integer
-    | binary_integer
-	| decimal_integer
+type_suffixes = { "u8" }
+number_literal = ${
+	(
+	    floating_point
+        | hex_integer
+        | octal_integer
+        | binary_integer
+        | decimal_integer
+    )
+    ~ type_suffixes?
 }
