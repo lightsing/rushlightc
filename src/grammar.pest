@@ -28,13 +28,11 @@ sstring = ${ PUSH("\"" | "'") ~ sstring_inner ~ POP }
 string_literal = ${	mstring | sstring }
 
 visual_sep = _{ "_" }
-ASCII_DIGITS = @{
-	(ASCII_DIGIT ~ (ASCII_DIGIT | (&(visual_sep ~ ASCII_DIGIT) ~ visual_sep))*)
-}
+ASCII_DIGITS = @{ (ASCII_DIGIT ~ (ASCII_DIGIT | (&(visual_sep ~ ASCII_DIGIT) ~ visual_sep))*) }
 decimal_integer = @{ ASCII_DIGITS }
-hex_integer = @{ "0x" ~ ASCII_HEX_DIGIT ~ (ASCII_HEX_DIGIT | visual_sep)* }
-octal_integer = @{ "0o" ~ ASCII_OCT_DIGIT ~ (ASCII_OCT_DIGIT | visual_sep)* }
-binary_integer = @{ "0b" ~ ASCII_BIN_DIGIT ~ (ASCII_BIN_DIGIT | visual_sep)* }
+hex_integer = @{ "0x" ~ (ASCII_HEX_DIGIT ~ (ASCII_HEX_DIGIT | (&(visual_sep ~ ASCII_HEX_DIGIT) ~ visual_sep))*) }
+octal_integer = @{ "0o" ~ (ASCII_OCT_DIGIT ~ (ASCII_OCT_DIGIT | (&(visual_sep ~ ASCII_OCT_DIGIT) ~ visual_sep))*) }
+binary_integer = @{ "0b" ~ (ASCII_BIN_DIGIT ~ (ASCII_BIN_DIGIT | (&(visual_sep ~ ASCII_BIN_DIGIT) ~ visual_sep))*) }
 floating_point = @{
 	ASCII_DIGITS* ~ "." ~ ASCII_DIGITS
     ~ (("e" | "E") ~ ("+" | "-")? ~ ASCII_DIGITS)?
