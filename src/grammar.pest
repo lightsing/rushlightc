@@ -3,3 +3,19 @@ rust_ident = ${ ("r#" ~ rl_ident) }
 ident = { rl_ident | rust_ident }
 
 annotation = ${ "@" ~ rl_ident ~ ("(" ~ rl_ident ~ ")")? }
+
+ascii_control_escape = @{ "\\" ~ ("n" | "r" | "t" | "\\") }
+hex_escape = @{ "\\x" ~ ASCII_HEX_DIGIT{2} }
+escape_sequence = {
+	ascii_control_escape
+    | hex_escape
+}
+
+any_inner_sequence = @{ (!PEEK ~ ANY)+ }
+non_new_line_inner_sequence = @{ (!(PEEK | NEWLINE) ~ ANY)+ }
+multi_line_string_inner = ${ (escape_sequence | any_inner_sequence)* }
+multi_line_string = ${ PUSH("\"\"\"" | "'''") ~ multi_line_string_inner ~ POP }
+
+single_line_string_inner = ${ (escape_sequence | non_new_line_inner_sequence)* }
+single_line_string = ${ PUSH("\"" | "'") ~ single_line_string_inner ~ POP }
+string = ${	multi_line_string | single_line_string }
